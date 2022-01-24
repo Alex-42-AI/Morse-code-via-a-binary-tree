@@ -51,7 +51,9 @@ class BinTree:
         while Last_Node.right is not None:
             Last_Node = Last_Node.right
         node = self.root
-        last_node, current, Max, so_far, chain = node, 0, 0, [], [node]
+        last_node = node
+        current, Max = 0, 0
+        so_far, chain = [], [node]
         while True:
             if node.left is not None and node.left not in so_far:
                 last_node = node
