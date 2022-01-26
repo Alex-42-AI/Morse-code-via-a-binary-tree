@@ -1,6 +1,6 @@
 # Morse-code-via-a-binary-tree
 A binary tree is a recursive data structure, composing of a root, a left subtree and a right subtree. Morse code can be implemented with the help of a binary tree, where, for example,
-a left subtree means adding a dot and a right subtree means adding a dash. That way, the letter 'k', which in Morse code is written as "- . -", can be the root of the right subtree
+a left subtree means adding a dot and a right subtree means adding a dash. That way, the letter 'k', which in Morse code is written as "- . -", can be positioned in the root of the right subtree
 of the left subtree of the right subtree of the original tree of the Morse code. On top of that, the implemented binary tree in this project has:
 1) methods left() and right(), that return respectively the left subtree and the right subtree;
 2) methods to return the height of the tree - one recursive and one using DFS;
