@@ -51,17 +51,14 @@ class BinTree:
         while Last_Node.right is not None:
             Last_Node = Last_Node.right
         node = self.root
-        last_node = node
         current, Max = 0, 0
         so_far, chain = [], [node]
         while True:
-            if node.left is not None and node.left not in so_far:
-                last_node = node
+            if node.left not in so_far:
                 node = node.left
                 chain.append(node)
                 current += 1
-            elif node.right is not None and node.right not in so_far:
-                last_node = node
+            elif node.right not in so_far:
                 node = node.right
                 chain.append(node)
                 current += 1
@@ -70,8 +67,7 @@ class BinTree:
                 if node == Last_Node:
                     break
                 current -= 1
-                node = last_node
-                last_node = chain[chain.index(last_node) - 1]
+                node = chain[chain.index(node) - 1]
                 so_far.append(chain.pop())
         return Max
     def count_leaves(self, curr_node=''):
