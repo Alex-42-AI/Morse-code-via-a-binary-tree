@@ -111,21 +111,21 @@ class BinTree:
         node.left, node.right = node.right, node.left
     def __preorder_print(self, start, traversal):
         if start:
-            traversal += [str(start)]
+            traversal += [start]
             traversal = self.__preorder_print(start.left, traversal)
             traversal = self.__preorder_print(start.right, traversal)
         return traversal
     def __in_order_print(self, start, traversal):
         if start:
             traversal = self.__in_order_print(start.left, traversal)
-            traversal += [str(start)]
+            traversal += [start]
             traversal = self.__in_order_print(start.right, traversal)
         return traversal
     def __post_order_print(self, start, traversal):
         if start:
             traversal = self.__post_order_print(start.left, traversal)
             traversal = self.__post_order_print(start.right, traversal)
-            traversal += [str(start)]
+            traversal += [start]
         return traversal
     def print(self, traversal_type):
         if traversal_type.lower() == 'preorder':
@@ -197,7 +197,7 @@ MorseCode.root.right.right.right.left.left.left = BinNode(':')
 MorseCode.root.right.right.right.right = BinNode(None)
 MorseCode.root.right.right.right.right.left = BinNode('9')
 MorseCode.root.right.right.right.right.right = BinNode('0')
-MorseCode.print('in-order')  # ['(4)', '(h)', '(5)', '(s)', '(v)', '(3)', '(i)', '(f)', '(u)', '(?)', '(None)', '(None)', '(2)', '(e)', '(&)', '(l)', '(")', '(None)', '(r)', '(+)', '(.)', '(None)', '(a)', '(p)', '(@)', '(None)', '(w)', "(')", '(j)', '(1)', '()', '(6)', '(-)', '(b)', '(=)', '(d)', '(/)', '(x)', '(n)', '(c)', '(None)', '(!)', '(k)', '(()', '())', '(y)', '(t)', '(7)', '(z)', '(None)', '(,)', '(g)', '(q)', '(m)', '(:)', '(8)', '(None)', '(o)', '(9)', '(None)', '(0)']
+MorseCode.print('in-order')  # [(4), (h), (5), (s), (v), (3), (i), (f), (u), (?), (None), (None), (2), (e), (&), (l), ("), (None), (r), (+), (.), (None), (a), (p), (@), (None), (w), ('), (j), (1), (), (6), (-), (b), (=), (d), (/), (x), (n), (c), (None), (!), (k), ((), ()), (y), (t), (7), (z), (None), (,), (g), (q), (m), (:), (8), (None), (o), (9), (None), (0)]
 print(MorseCode.path_to(BinNode('!')))  # - . - . - -
 print(MorseCode.count_nodes(), MorseCode.count_leaves())  # 52 23
 print(MorseCode.get_height_recursive(), MorseCode.get_height())  # 6 6
