@@ -6,6 +6,6 @@ of the left subtree of the right subtree of the original tree of the Morse code.
 2) methods to return the height of the tree - one recursive and one using DFS;
 3) a method for counting the leaves of the tree;
 4) a method for counting the nodes of the tree;
-5) a method for finding the path from the root to a node with a given value in the tree;
+5) a method for finding the Morse code of a node with a given value in the tree;
 6) a method for inverting the tree;
 7) methods for printing all the node values in the tree preorder, in order and post order.
