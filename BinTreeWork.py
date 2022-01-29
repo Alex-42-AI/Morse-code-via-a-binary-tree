@@ -88,12 +88,16 @@ class BinTree:
         if tree is None:
             tree = self
         if tree.root.value is False:
-            return ''
-        if n.value == tree.root.value:
-            return ' '
+            return
+        if tree.root.left is not None:
+            if tree.root.left.value == n.value:
+                return '.'
         res = self.path_to(n, tree.left())
         if res:
             return '. ' + res
+        if tree.root.right is not None:
+            if tree.root.right.value == n.value:
+                return
         res = self.path_to(n, tree.right())
         if res:
             return '- ' + res
@@ -194,6 +198,6 @@ MorseCode.root.right.right.right.right = BinNode(None)
 MorseCode.root.right.right.right.right.left = BinNode('9')
 MorseCode.root.right.right.right.right.right = BinNode('0')
 MorseCode.print('in-order')  # ['(4)', '(h)', '(5)', '(s)', '(v)', '(3)', '(i)', '(f)', '(u)', '(?)', '(None)', '(None)', '(2)', '(e)', '(&)', '(l)', '(")', '(None)', '(r)', '(+)', '(.)', '(None)', '(a)', '(p)', '(@)', '(None)', '(w)', "(')", '(j)', '(1)', '()', '(6)', '(-)', '(b)', '(=)', '(d)', '(/)', '(x)', '(n)', '(c)', '(None)', '(!)', '(k)', '(()', '())', '(y)', '(t)', '(7)', '(z)', '(None)', '(,)', '(g)', '(q)', '(m)', '(:)', '(8)', '(None)', '(o)', '(9)', '(None)', '(0)']
-print(MorseCode.path_to(BinNode('!')))  # [(), (t), (n), (k), (c), (None), (!)]
+print(MorseCode.path_to(BinNode('!')))  # - . - . - -
 print(MorseCode.count_nodes(), MorseCode.count_leaves())  # 52 23
 print(MorseCode.get_height_recursive(), MorseCode.get_height())  # 6 6
