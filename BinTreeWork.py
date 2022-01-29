@@ -88,15 +88,15 @@ class BinTree:
         if tree is None:
             tree = self
         if tree.root.value is False:
-            return []
+            return ''
         if n.value == tree.root.value:
-            return [n]
+            return ' '
         res = self.path_to(n, tree.left())
         if res:
-            return [tree.root] + res
+            return '. ' + res
         res = self.path_to(n, tree.right())
         if res:
-            return [tree.root] + res
+            return '- ' + res
     def invert(self, node=''):
         if node == '':
             node = self.root
