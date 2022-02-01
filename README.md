@@ -4,8 +4,9 @@ a left subtree means adding a dot and a right subtree means adding a dash. That 
 of the left subtree of the right subtree of the original tree of the Morse code. On top of that, the implemented binary tree in this project has:
 1) methods left() and right(), that return respectively the left subtree and the right subtree;
 2) methods to return the height of the tree - one recursive and one using DFS;
-3) a method for counting the leaves of the tree;
-4) a method for counting the nodes of the tree;
-5) a method for finding the Morse code of a node with a given value in the tree;
-6) a method for inverting the tree;
-7) methods for printing all the node values in the tree preorder, in order and post order.
+3) a method to return all nodes on a certain level in the tree and a method, that returns the width of the tree;
+4) a method for counting the leaves of the tree;
+5) a method for counting the nodes of the tree;
+6) a method for finding the Morse code of a node with a given value in the tree;
+7) a method for inverting the tree;
+8) methods for printing all the node values in the tree preorder, in order and post order.
