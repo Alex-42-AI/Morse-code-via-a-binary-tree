@@ -12,7 +12,7 @@ class BinNode:
     def __repr__(self):
         return str(self)
 class BinTree:
-    def __init__(self, root):
+    def __init__(self, root=None):
         self.root = BinNode(root)
     def copy(self, curr_from, curr_to):
         if curr_from is None:
@@ -117,7 +117,7 @@ class BinTree:
             return '. ' + res
         if tree.root.right is not None:
             if tree.root.right.value == n.value:
-                return
+                return '-'
         res = self.path_to(n, tree.right())
         if res:
             return '- ' + res
