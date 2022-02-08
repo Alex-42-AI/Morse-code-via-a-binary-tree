@@ -41,7 +41,7 @@ class BinTree:
         if level > self.get_height_recursive() or level < 0:
             return 0
         if not level:
-            return 1
+            return curr_node.value is not None
         if curr_node.left is None and curr_node.right is None:
             return not level
         left, right = 0, 0
@@ -71,8 +71,7 @@ class BinTree:
         while Last_Node.right is not None:
             Last_Node = Last_Node.right
         node = self.root
-        current, Max = 0, 0
-        so_far, chain = [], [node]
+        current, Max, so_far, chain = 0, 0, [None], [node]
         while True:
             if node.left not in so_far:
                 node = node.left
@@ -103,8 +102,8 @@ class BinTree:
             curr_node = self.root
         if curr_node is None:
             return 0
-        return (curr_node.value is not None) + self.count_nodes(curr_node.left) + self.count_nodes(curr_node.right)
-    def path_to(self, n: BinNode, tree=None):
+        return 1 + self.count_nodes(curr_node.left) + self.count_nodes(curr_node.right)
+    def code_in_morse(self, n: BinNode, tree=None):
         if tree is None:
             tree = self
         if tree.root.value is False:
@@ -112,15 +111,23 @@ class BinTree:
         if tree.root.left is not None:
             if tree.root.left.value == n.value:
                 return '.'
-        res = self.path_to(n, tree.left())
+        res = self.code_in_morse(n, tree.left())
         if res:
             return '. ' + res
         if tree.root.right is not None:
             if tree.root.right.value == n.value:
                 return '-'
-        res = self.path_to(n, tree.right())
+        res = self.code_in_morse(n, tree.right())
         if res:
             return '- ' + res
+    def encode(self, message: str):
+        res = ''
+        for c in message.lower():
+            if c in self:
+                res += self.code_in_morse(BinNode(c)) + '   '
+            else:
+                res += c + '  '
+        return res[:-2]
     def invert(self, node=''):
         if node == '':
             node = self.root
@@ -129,6 +136,24 @@ class BinTree:
         self.invert(node.left)
         self.invert(node.right)
         node.left, node.right = node.right, node.left
+    def __contains__(self, item):
+        if self.root.value == item:
+            return True
+        if self.root.left is not None:
+            if item in self.left():
+                return True
+        if self.root.right is not None:
+            return item in self.right()
+    def __eq__(self, other):
+        if self.root == other.root:
+            if self.root.left is not None and other.root.left is not None:
+                if self.left() == other.left():
+                    return True
+                return self.root.left == other.root.left
+            if self.root.right is not None and other.root.right is not None:
+                return self.right() == other.right()
+            return self.root.right == other.root.right
+        return False
     def __preorder_print(self, start, traversal):
         if start:
             traversal += [start]
@@ -173,13 +198,13 @@ MorseCode.root.left.left.right.right.left.left = BinNode('?')
 MorseCode.root.left.left.right.right.right = BinNode('2')
 MorseCode.root.left.right = BinNode('a')
 MorseCode.root.left.right.left = BinNode('r')
-MorseCode.root.left.right.left.right = BinNode(None)
-MorseCode.root.left.right.left.right.left = BinNode('+')
-MorseCode.root.left.right.left.right.left.right = BinNode('.')
 MorseCode.root.left.right.left.left = BinNode('l')
 MorseCode.root.left.right.left.left.left = BinNode('&')
 MorseCode.root.left.right.left.left.right = BinNode(None)
 MorseCode.root.left.right.left.left.right.left = BinNode('"')
+MorseCode.root.left.right.left.right = BinNode(None)
+MorseCode.root.left.right.left.right.left = BinNode('+')
+MorseCode.root.left.right.left.right.left.right = BinNode('.')
 MorseCode.root.left.right.right = BinNode('w')
 MorseCode.root.left.right.right.left = BinNode('p')
 MorseCode.root.left.right.right.left.right = BinNode(None)
@@ -222,3 +247,4 @@ print(MorseCode.path_to(BinNode('!')))  # - . - . - -
 print(MorseCode.count_nodes(), MorseCode.count_leaves())  # 52 23
 print(MorseCode.get_height_recursive(), MorseCode.get_height())  # 6 6
 print(MorseCode.nodes_on_level(6), MorseCode.width())  # 9 21
+print(MorseCode.encode('Testing encode.'))  # -   .   . . .   -   . .   - .   - - .      .   - .   - . - .   - - -   - . .   .   . - . - . -
