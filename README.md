@@ -8,5 +8,7 @@ of the left subtree of the right subtree of the original tree of the Morse code.
 4) a method for counting the leaves of the tree;
 5) a method for counting the nodes of the tree;
 6) a method for finding the Morse code of a node with a given value in the tree;
-7) a method for inverting the tree;
-8) methods for printing all the node values in the tree preorder, in order and post order.
+7) a method for encrypting a message into morse code;
+8) __contains__ and __eq__ methods;
+9) a method for inverting the tree;
+10) methods for printing all the node values in the tree preorder, in order and post order.
