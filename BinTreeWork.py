@@ -251,9 +251,9 @@ MorseCode.root.right.right.right.left.left.left = BinNode(':')
 MorseCode.root.right.right.right.right = BinNode()
 MorseCode.root.right.right.right.right.left = BinNode('9')
 MorseCode.root.right.right.right.right.right = BinNode('0')
-MorseCode.print()  # [(4), (h), (5), (s), (v), (3), (i), (f), (u), (?), (None), (None), (2), (e), (&), (l), ("), (None), (r), (+), (.), (None), (a), (p), (@), (None), (w), ('), (j), (1), (), (6), (-), (b), (=), (d), (/), (x), (n), (c), (None), (!), (k), ((), ()), (y), (t), (7), (z), (None), (,), (g), (q), (m), (:), (8), (None), (o), (9), (None), (0)]
+MorseCode.print()  # [(5), (h), (4), (s), (None), ($), (None), (v), (3), (i), (f), (u), (?), (None), (_), (None), (2), (e), (&), (l), ("), (None), (r), (+), (.), (None), (a), (p), (@), (None), (w), (j), ('), (1), (), (6), (-), (b), (=), (d), (/), (x), (n), (c), (;), (None), (!), (k), ((), ()), (y), (t), (7), (z), (None), (,), (g), (q), (m), (:), (8), (None), (o), (9), (None), (0)]
 print(MorseCode.code_in_morse(BinNode('!')))  # - . - . - -
-print(MorseCode.count_nodes(), MorseCode.count_leaves())  # 52 23
-print(MorseCode.get_height_recursive(), MorseCode.get_height())  # 6 6
-print(MorseCode.nodes_on_level(6), MorseCode.width())  # [(?), ("), (.), (@), (-), (!), ()), (,), (:)] 21
+print(MorseCode.count_nodes(), MorseCode.count_leaves())  # 55 25
+print(MorseCode.get_height_recursive(), MorseCode.get_height())  # 7 7
+print(MorseCode.nodes_on_level(6), MorseCode.width())  # [(None), (?), (_), ("), (.), (@), ('), (-), (;), (!), ()), (,), (:)] 21
 print(MorseCode.encode('Testing encode.'))  # -   .   . . .   -   . .   - .   - - .      .   - .   - . - .   - - -   - . .   .   . - . - . -
