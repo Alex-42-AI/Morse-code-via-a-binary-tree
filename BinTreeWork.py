@@ -14,15 +14,15 @@ class BinNode:
 class BinTree:
     def __init__(self, root=None):
         self.root = BinNode(root)
-    def copy(self, curr_from, curr_to):
-        if curr_from is None:
+    def copy(self, curr_from: BinNode, curr_to: BinNode):
+        if curr_from is None or curr_to is None:
             return
         if curr_from.left is not None:
-            curr_to.left = curr_from.left
             self.copy(curr_from.left, curr_to.left)
+            curr_to.left = curr_from.left
         if curr_from.right is not None:
-            curr_to.right = curr_from.right
             self.copy(curr_from.right, curr_to.right)
+            curr_to.right = curr_from.right
     def left(self):
         if self.root.left is not None:
             res = BinTree(self.root.left.value)
@@ -181,6 +181,10 @@ class BinTree:
             print(self.__post_order_print(self.root, []))
         else:
             print('Traversal type ' + str(traversal_type) + ' is not supported!')
+    def __str__(self):
+        return str(self.__in_order_print(self.root, []))
+    def __repr__(self):
+        return str(self)
 MorseCode = BinTree('')
 MorseCode.root.left = BinNode('e')
 MorseCode.root.left.left = BinNode('i')
