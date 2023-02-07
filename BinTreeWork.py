@@ -1,259 +1,73 @@
-class BinNode:
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
-    def __eq__(self, other):
-        if isinstance(other, BinNode):
-            return self.value == other.value and self.left == other.left and self.right == other.right
-        return False
-    def __str__(self):
-        return '(' + str(self.value) + ')'
-    def __repr__(self):
-        return str(self)
-class BinTree:
-    def __init__(self, root=None):
-        self.root = BinNode(root)
-    def copy(self, curr_from: BinNode, curr_to: BinNode):
-        if curr_from is None or curr_to is None:
-            return
-        if curr_from.left is not None:
-            self.copy(curr_from.left, curr_to.left)
-            curr_to.left = curr_from.left
-        if curr_from.right is not None:
-            self.copy(curr_from.right, curr_to.right)
-            curr_to.right = curr_from.right
-    def left(self):
-        if self.root.left is not None:
-            res = BinTree(self.root.left.value)
-            self.copy(self.root.left, res.root)
-            return res
-        return BinTree(False)
-    def right(self):
-        if self.root.right is not None:
-            res = BinTree(self.root.right.value)
-            self.copy(self.root.right, res.root)
-            return res
-        return BinTree(False)
-    def nodes_on_level(self, level: int, curr_node=''):
-        if curr_node == '':
-            curr_node = self.root
-        if level > self.get_height_recursive() or level < 0:
-            return []
-        if not level:
-            return [curr_node]
-        if curr_node.left is None and curr_node.right is None:
-            return [curr_node] * (not level)
-        left, right = [], []
-        if curr_node.left is not None:
-            left = self.nodes_on_level(level - 1, curr_node.left)
-        if curr_node.right is not None:
-            right = self.nodes_on_level(level - 1, curr_node.right)
-        return left + right
-    def width(self):
-        Max = 0
-        for i in range(self.get_height_recursive()):
-            Max = max(len(self.nodes_on_level(i)), Max)
-        return Max
-    def get_height_recursive(self, curr_node=''):
-        if curr_node == '':
-            curr_node = self.root
-        if curr_node.left is None and curr_node.right is None:
-            return 0
-        left, right = 0, 0
-        if curr_node.left is not None:
-            left = self.get_height_recursive(curr_node.left)
-        if curr_node.right is not None:
-            right = self.get_height_recursive(curr_node.right)
-        return 1 + max(left, right)
-    def get_height(self):
-        Last_Node = self.root
-        while Last_Node.right is not None:
-            Last_Node = Last_Node.right
-        node = self.root
-        current, Max, so_far, chain = 0, 0, [None], [node]
-        while True:
-            if node.left not in so_far:
-                node = node.left
-                chain.append(node)
-                current += 1
-            elif node.right not in so_far:
-                node = node.right
-                chain.append(node)
-                current += 1
-            else:
-                Max = max(Max, current)
-                if node == Last_Node:
-                    break
-                current -= 1
-                node = chain[chain.index(node) - 1]
-                so_far.append(chain.pop())
-        return Max
-    def count_leaves(self, curr_node=''):
-        if curr_node == '':
-            curr_node = self.root
-        if curr_node is None:
-            return 0
-        if curr_node.left is None and curr_node.right is None:
-            return 1
-        return self.count_leaves(curr_node.left) + self.count_leaves(curr_node.right)
-    def count_nodes(self, curr_node=''):
-        if curr_node == '':
-            curr_node = self.root
-        if curr_node is None:
-            return 0
-        return (curr_node.value is not None) + self.count_nodes(curr_node.left) + self.count_nodes(curr_node.right)
-    def code_in_morse(self, n: BinNode, tree=None):
-        if tree is None:
-            tree = self
-        if tree.root.value is False:
-            return
-        if tree.root.left is not None:
-            if tree.root.left.value == n.value:
-                return '.'
-        res = self.code_in_morse(n, tree.left())
-        if res:
-            return '. ' + res
-        if tree.root.right is not None:
-            if tree.root.right.value == n.value:
-                return '-'
-        res = self.code_in_morse(n, tree.right())
-        if res:
-            return '- ' + res
-    def encode(self, message: str):
-        res = ''
-        for c in message.lower():
-            if c in self:
-                res += self.code_in_morse(BinNode(c)) + '   '
-            else:
-                res += c + '  '
-        return res[:-2]
-    def invert(self, node=''):
-        if node == '':
-            node = self.root
-        if node is None:
-            return
-        self.invert(node.left)
-        self.invert(node.right)
-        node.left, node.right = node.right, node.left
-    def __contains__(self, item):
-        if self.root.value == item:
-            return True
-        if self.root.left is not None:
-            if item in self.left():
-                return True
-        if self.root.right is not None:
-            return item in self.right()
-    def __eq__(self, other):
-        if self.root == other.root:
-            if self.root.left is not None and other.root.left is not None:
-                if self.left() == other.left():
-                    return True
-                return self.root.left == other.root.left
-            if self.root.right is not None and other.root.right is not None:
-                return self.right() == other.right()
-            return self.root.right == other.root.right
-        return False
-    def __preorder_print(self, start, traversal):
-        if start:
-            traversal += [start]
-            traversal = self.__preorder_print(start.left, traversal)
-            traversal = self.__preorder_print(start.right, traversal)
-        return traversal
-    def __in_order_print(self, start, traversal):
-        if start:
-            traversal = self.__in_order_print(start.left, traversal)
-            traversal += [start]
-            traversal = self.__in_order_print(start.right, traversal)
-        return traversal
-    def __post_order_print(self, start, traversal):
-        if start:
-            traversal = self.__post_order_print(start.left, traversal)
-            traversal = self.__post_order_print(start.right, traversal)
-            traversal += [start]
-        return traversal
-    def print(self, traversal_type='in-order'):
-        if traversal_type.lower() == 'preorder':
-            print(self.__preorder_print(self.root, []))
-        elif traversal_type.lower() == 'in-order':
-            print(self.__in_order_print(self.root, []))
-        elif traversal_type.lower() == 'post-order':
-            print(self.__post_order_print(self.root, []))
-        else:
-            print('Traversal type ' + str(traversal_type) + ' is not supported!')
-    def __str__(self):
-        return str(self.__in_order_print(self.root, []))
-    def __repr__(self):
-        return str(self)
+from Personal.DiscreteMath.Graphs import BinNode, BinTree, print_zig_zag
 MorseCode = BinTree('')
-MorseCode.root.left = BinNode('e')
-MorseCode.root.left.left = BinNode('i')
-MorseCode.root.left.left.left = BinNode('s')
-MorseCode.root.left.left.left.left = BinNode('h')
+MorseCode.root.left = BinNode('E')
+MorseCode.root.left.left = BinNode('I')
+MorseCode.root.left.left.left = BinNode('S')
+MorseCode.root.left.left.left.left = BinNode('H')
 MorseCode.root.left.left.left.left.left = BinNode('5')
 MorseCode.root.left.left.left.left.right = BinNode('4')
-MorseCode.root.left.left.left.right = BinNode('v')
+MorseCode.root.left.left.left.right = BinNode('V')
 MorseCode.root.left.left.left.right.left = BinNode()
 MorseCode.root.left.left.left.right.left.left = BinNode()
 MorseCode.root.left.left.left.right.left.left.right = BinNode('$')
 MorseCode.root.left.left.left.right.right = BinNode('3')
-MorseCode.root.left.left.right = BinNode('u')
-MorseCode.root.left.left.right.left = BinNode('f')
+MorseCode.root.left.left.right = BinNode('U')
+MorseCode.root.left.left.right.left = BinNode('F')
 MorseCode.root.left.left.right.right = BinNode()
 MorseCode.root.left.left.right.right.left = BinNode()
 MorseCode.root.left.left.right.right.left.left = BinNode('?')
 MorseCode.root.left.left.right.right.left.right = BinNode('_')
 MorseCode.root.left.left.right.right.right = BinNode('2')
-MorseCode.root.left.right = BinNode('a')
-MorseCode.root.left.right.left = BinNode('r')
-MorseCode.root.left.right.left.left = BinNode('l')
+MorseCode.root.left.right = BinNode('A')
+MorseCode.root.left.right.left = BinNode('R')
+MorseCode.root.left.right.left.left = BinNode('L')
 MorseCode.root.left.right.left.left.left = BinNode('&')
 MorseCode.root.left.right.left.left.right = BinNode()
 MorseCode.root.left.right.left.left.right.left = BinNode('"')
 MorseCode.root.left.right.left.right = BinNode()
 MorseCode.root.left.right.left.right.left = BinNode('+')
 MorseCode.root.left.right.left.right.left.right = BinNode('.')
-MorseCode.root.left.right.right = BinNode('w')
-MorseCode.root.left.right.right.left = BinNode('p')
+MorseCode.root.left.right.right = BinNode('W')
+MorseCode.root.left.right.right.left = BinNode('P')
 MorseCode.root.left.right.right.left.right = BinNode()
 MorseCode.root.left.right.right.left.right.left = BinNode('@')
-MorseCode.root.left.right.right.right = BinNode('j')
+MorseCode.root.left.right.right.right = BinNode('J')
 MorseCode.root.left.right.right.right.right = BinNode('1')
 MorseCode.root.left.right.right.right.right.left = BinNode('\'')
-MorseCode.root.right = BinNode('t')
-MorseCode.root.right.left = BinNode('n')
-MorseCode.root.right.left.left = BinNode('d')
-MorseCode.root.right.left.left.left = BinNode('b')
+MorseCode.root.right = BinNode('T')
+MorseCode.root.right.left = BinNode('N')
+MorseCode.root.right.left.left = BinNode('D')
+MorseCode.root.right.left.left.left = BinNode('B')
 MorseCode.root.right.left.left.left.left = BinNode('6')
 MorseCode.root.right.left.left.left.left.right = BinNode('-')
 MorseCode.root.right.left.left.left.right = BinNode('=')
-MorseCode.root.right.left.left.right = BinNode('x')
+MorseCode.root.right.left.left.right = BinNode('X')
 MorseCode.root.right.left.left.right.left = BinNode('/')
-MorseCode.root.right.left.right = BinNode('k')
-MorseCode.root.right.left.right.left = BinNode('c')
+MorseCode.root.right.left.right = BinNode('K')
+MorseCode.root.right.left.right.left = BinNode('C')
 MorseCode.root.right.left.right.left.right = BinNode()
 MorseCode.root.right.left.right.left.right.left = BinNode(';')
 MorseCode.root.right.left.right.left.right.right = BinNode('!')
-MorseCode.root.right.left.right.right = BinNode('y')
+MorseCode.root.right.left.right.right = BinNode('Y')
 MorseCode.root.right.left.right.right.left = BinNode('(')
 MorseCode.root.right.left.right.right.left.right = BinNode(')')
-MorseCode.root.right.right = BinNode('m')
-MorseCode.root.right.right.left = BinNode('g')
-MorseCode.root.right.right.left.left = BinNode('z')
+MorseCode.root.right.right = BinNode('M')
+MorseCode.root.right.right.left = BinNode('G')
+MorseCode.root.right.right.left.left = BinNode('Z')
 MorseCode.root.right.right.left.left.left = BinNode('7')
 MorseCode.root.right.right.left.left.right = BinNode()
 MorseCode.root.right.right.left.left.right.right = BinNode(',')
-MorseCode.root.right.right.left.right = BinNode('q')
-MorseCode.root.right.right.right = BinNode('o')
+MorseCode.root.right.right.left.right = BinNode('Q')
+MorseCode.root.right.right.right = BinNode('O')
 MorseCode.root.right.right.right.left = BinNode()
 MorseCode.root.right.right.right.left.left = BinNode('8')
 MorseCode.root.right.right.right.left.left.left = BinNode(':')
 MorseCode.root.right.right.right.right = BinNode()
 MorseCode.root.right.right.right.right.left = BinNode('9')
 MorseCode.root.right.right.right.right.right = BinNode('0')
-MorseCode.print()  # [(5), (h), (4), (s), (None), ($), (None), (v), (3), (i), (f), (u), (?), (None), (_), (None), (2), (e), (&), (l), ("), (None), (r), (+), (.), (None), (a), (p), (@), (None), (w), (j), ('), (1), (), (6), (-), (b), (=), (d), (/), (x), (n), (c), (;), (None), (!), (k), ((), ()), (y), (t), (7), (z), (None), (,), (g), (q), (m), (:), (8), (None), (o), (9), (None), (0)]
-print(MorseCode.code_in_morse(BinNode('!')))  # - . - . - -
-print(MorseCode.count_nodes(), MorseCode.count_leaves())  # 55 25
-print(MorseCode.get_height_recursive(), MorseCode.get_height())  # 7 7
-print(MorseCode.nodes_on_level(6), MorseCode.width())  # [(None), (?), (_), ("), (.), (@), ('), (-), (;), (!), ()), (,), (:)] 21
-print(MorseCode.encode('Testing encode.'))  # -   .   . . .   -   . .   - .   - - .      .   - .   - . - .   - - -   - . .   .   . - . - . -
+if __name__ == '__main__':
+    print_zig_zag(MorseCode)
+    for Type in ('preorder', 'in-order', 'post-order'):
+        MorseCode.print(Type)
+    print(MorseCode.code_in_morse('4'), MorseCode.count_nodes(), MorseCode.count_leaves(), MorseCode.get_height_recursive(), MorseCode.get_height(), MorseCode.nodes_on_level(6), MorseCode.width())
+    print(MorseCode.encode('Testing encode.'))
