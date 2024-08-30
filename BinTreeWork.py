@@ -1,4 +1,32 @@
-from Personal.DiscreteMath.Graphs import BinNode, BinTree, print_zig_zag
+from Personal.DiscreteMath.Graphs import BinNode, BinTree
+from Personal.Lists import build_heap
+def binary_heap(l: list):
+    build_heap(l, len(l))
+    def helper(curr_root, rest, i=1):
+        left = helper(rest[0], rest[(2 ** i):], i + 1) if rest else None
+        right = helper(rest[1], rest[2 * 2 ** i:], i + 1) if rest[1:] else None
+        res = BinNode(curr_root, left, right)
+        return res
+    return BinTree(helper(l[0], l[1:]))
+def print_zig_zag(t: BinTree):
+    def helper(from_left: bool, *nodes: BinNode):
+        new = []
+        if from_left:
+            for n in nodes:
+                if n.left is not None:
+                    new.insert(0, n.left), print(n.left, end=' ')
+                if n.right is not None:
+                    new.insert(0, n.right), print(n.right, end=' ')
+        else:
+            for n in nodes:
+                if n.right is not None:
+                    new.insert(0, n.right), print(n.right, end=' ')
+                if n.left is not None:
+                    new.insert(0, n.left), print(n.left, end=' ')
+        if not new:
+            return
+        print(), helper(not from_left, *new)
+    print(t.root), helper(True, t.root)
 MorseCode = BinTree('')
 MorseCode.root.left = BinNode('E')
 MorseCode.root.left.left = BinNode('I')
