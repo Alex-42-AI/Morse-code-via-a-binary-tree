@@ -1,5 +1,5 @@
-from Personal.Graphs import BinNode, BinTree
-from Personal.Lists import build_heap
+from Graphs.Tree import BinNode, BinTree
+from Lists import build_heap
 def binary_heap(l: list):
     build_heap(l, len(l))
     def helper(curr_root, rest, i=1):
