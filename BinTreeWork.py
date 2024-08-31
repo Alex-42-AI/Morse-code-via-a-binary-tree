@@ -1,4 +1,4 @@
-from Personal.DiscreteMath.Graphs import BinNode, BinTree
+from Personal.Graphs import BinNode, BinTree
 from Personal.Lists import build_heap
 def binary_heap(l: list):
     build_heap(l, len(l))
